@@ -28,8 +28,8 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version     = 2021081600;
-$plugin->requires    = 2020110900; // Moodle 3.10+.
+$plugin->version     = 2021081601;
+$plugin->requires    = 2021051700; // Moodle 3.11+.
 $plugin->component = 'mod_gwpayments';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.0 (build 2021081600)';
+$plugin->release = '1.0.1 (build 2021081601)';

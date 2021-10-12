@@ -85,4 +85,39 @@ class helper {
         $list->close();
     }
 
+    /**
+     * Determine whether a valid payment can be made.
+     *
+     * @param \cm_info|stdClass $cm course module we're making the determination for.
+     * @param array $reasons
+     * @return boolean
+     */
+    public static function can_payment_be_made($cm, array &$reasons) {
+        global $DB;
+        $gwpaymentsrecord = $DB->get_record('gwpayments', ['id' => $cm->instance]);
+        // If no account set...
+        if (empty($gwpaymentsrecord->accountid)) {
+            $reasons[] = get_string('err:no-payment-account-set', 'mod_gwpayments');
+            return false;
+        }
+        try {
+            // Account validation.
+            $account = new \core_payment\account($gwpaymentsrecord->accountid);
+            if (!$account->is_available()) {
+                $reasons[] = get_string('err:payment-account-unavailable', 'mod_gwpayments');
+                return false;
+            }
+            // Gateway currency validation.
+            $gateways = \core_payment\helper::get_available_gateways('mod_gwpayments', 'unlockfee', $gwpaymentsrecord->id);
+            if (count($gateways) == 0) {
+                $reasons[] = get_string('err:payment-no-available-gateways', 'mod_gwpayments');
+                return false;
+            }
+        } catch (\dml_missing_record_exception $e) { // @@codingStandardsIgnoreLine
+            $reasons[] = get_string('err:payment-account-not-exists', 'mod_gwpayments');
+            return false;
+        }
+        return true;
+    }
+
 }

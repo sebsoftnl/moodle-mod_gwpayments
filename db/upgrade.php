@@ -60,5 +60,21 @@ function xmldb_gwpayments_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
+    if ($oldversion < 2021081601) {
+        $table = new xmldb_table('gwpayments');
+        $field = new xmldb_field('disablepaymentonmisconfig', XMLDB_TYPE_INTEGER,
+                1, null, XMLDB_NOTNULL, null, '1', 'studentdisplayonpayments');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('accountid', XMLDB_TYPE_INTEGER, 10, null, null, null, null, 'introformat');
+        if ($dbman->field_exists($table, $field)) {
+            /** @var database_manager $dbman */
+            $dbman->change_field_notnull($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2021081601, 'mod', 'gwpayments');
+    }
+
     return true;
 }

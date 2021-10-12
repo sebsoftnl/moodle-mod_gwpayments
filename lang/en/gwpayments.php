@@ -32,6 +32,7 @@ $string['promodesc'] = 'This plugin is written by Sebsoft Managed Hosting & Soft
 (<a href=\'https://www.sebsoft.nl/\' target=\'_new\'>https://sebsoft.nl</a>).<br /><br />
 {$a}<br /><br />';
 $string['amount'] = 'Amount';
+$string['completiondetail:submit'] = 'Make a payment';
 $string['completionsubmit'] = 'Users must pay for this course module for it to be considered complete, creating the possibility to unlock other resources.';
 $string['completiondisabled:label'] = 'Completion is disabled.';
 $string['completiondisabled:warning'] = 'Completion is disabled. This course module relies on course completion as a way of making other resources available.';
@@ -45,6 +46,12 @@ $string['cost_help'] = 'The unlocking cost indicates the payment one must perfor
 In turn, this marks the module as completed which can in turn be used as a basis for basic completion rules, hence unlocking resources in the course.';
 $string['currency'] = 'Currency';
 $string['err:table:set_sql'] = 'Can\'t set sql: table sets it\'s own.';
+$string['err:payment:misconfiguration'] = 'Due to a misconfiguration no payment can be made at this time.<br/>
+If this message persists, please notify the system administrator.';
+$string['err:no-payment-account-set'] = 'No payment account is set for this activity.';
+$string['err:payment-account-not-exists'] = 'The payment account for this activity no longer exists.';
+$string['err:payment-account-unavailable'] = 'The payment account for this activity is unavailable.';
+$string['err:payment-no-available-gateways'] = 'No gateway available for this activity. This is usually the case when the expected currency is not available for any gateway or one or more gateway(s) is/are disabled.';
 $string['event:order:delivered'] = 'Order delivered';
 $string['gwpayments:addinstance'] = 'Add a new Gateway Payments resource';
 $string['gwpayments:view'] = 'View module';
@@ -57,6 +64,8 @@ The Gateway Payments course module marks activity completion on payment, hence m
 $string['modulename_link'] = 'mod/gwpayments/view';
 $string['modulenameplural'] = 'Payments';
 $string['no-payment-yet'] = 'No payment has yet been done by you.';
+$string['disablepaymentonmisconfig'] = 'Disable payment button when no (valid) payment can be made.';
+$string['disablepaymentonmisconfig_help'] = 'When enabled, the payment button will be disabled when a payment cannot be made, e.g. on currency mismappings or no gateways are available';
 $string['notenrolledchoose'] = 'You have to be enrolled in this course to perform payment actions.';
 $string['page-mod-gwpayments-x'] = 'Any Gateway Payments course module page';
 $string['paymentaccount'] = 'Payment account';

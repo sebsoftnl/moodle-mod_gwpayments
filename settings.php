@@ -73,4 +73,8 @@ if ($ADMIN->fulltree) {
         get_string('studentdisplayonpayments', 'mod_gwpayments'),
         get_string('studentdisplayonpayments_help', 'mod_gwpayments'), 0));
 
+    $settings->add(new admin_setting_configcheckbox('gwpayments/disablepaymentonmisconfig',
+        get_string('disablepaymentonmisconfig', 'mod_gwpayments'),
+        get_string('disablepaymentonmisconfig_help', 'mod_gwpayments'), 0));
+
 }

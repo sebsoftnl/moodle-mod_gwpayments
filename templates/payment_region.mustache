@@ -44,7 +44,10 @@
         "paymentarea": "fee",
         "description": "Enrolment in course Introduction to algorithms",
         "successurl": "https://moodlesite/course/view.php?id=2",
-        "isguestuser": false
+        "isguestuser": false,
+        "disablepaymentbutton": false,
+        "hasnotifications": false,
+        "notifications": []
     }
 
 }}
@@ -57,6 +60,11 @@
         </div>
     {{/isguestuser}}
     {{^isguestuser}}
+    {{#hasnotifications}}
+    {{#notifications}}
+    <div class="alert alert-warning">{{{.}}}</div>
+    {{/notifications}}
+    {{/hasnotifications}}
     <div class="mod_gwpayments-paymentoption">
         <p>{{# str }} paymentrequired, mod_gwpayments {{/ str}}</p>
         <p class="mod-gwpayments-basecost"><b>{{#str}}cost{{/str}}: {{currency}} {{localisedcost}}</b></p>
@@ -71,14 +79,17 @@
             data-cost="{{cost}}"
             data-successurl="{{successurl}}"
             data-description={{# quote }}{{description}}{{/ quote }}
+            {{#disablepaymentbutton}}disabled="disabled"{{/disablepaymentbutton}}
         >
             {{# str }} sendpaymentbutton, mod_gwpayments {{/ str }}
         </button>
     </div>
     {{/isguestuser}}
 </div>
+{{^disablepaymentbutton}}
 {{#js}}
     require(['core_payment/gateways_modal'], function(modal) {
         modal.init();
     });
 {{/js}}
+{{/disablepaymentbutton}}

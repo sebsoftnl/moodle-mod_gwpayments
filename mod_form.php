@@ -104,6 +104,13 @@ class mod_gwpayments_mod_form extends moodleform_mod {
                 get_string('studentdisplayonpayments', 'mod_gwpayments'),
                 get_string('studentdisplayonpayments', 'mod_gwpayments'));
         $mform->setDefault('studentdisplayonpayments', $config->studentdisplayonpayments);
+        $mform->addHelpButton('studentdisplayonpayments', 'studentdisplayonpayments', 'mod_gwpayments');
+
+        $mform->addElement('advcheckbox', 'disablepaymentonmisconfig',
+                get_string('disablepaymentonmisconfig', 'mod_gwpayments'),
+                get_string('disablepaymentonmisconfig', 'mod_gwpayments'));
+        $mform->setDefault('disablepaymentonmisconfig', $config->disablepaymentonmisconfig);
+        $mform->addHelpButton('disablepaymentonmisconfig', 'disablepaymentonmisconfig', 'mod_gwpayments');
 
         $mform->setExpanded('content');
 
@@ -166,6 +173,24 @@ class mod_gwpayments_mod_form extends moodleform_mod {
      * @param array $defaultvalues passed by reference
      */
     public function data_preprocessing(&$defaultvalues) {
+    }
+
+    /**
+     * Allows module to modify the data returned by form get_data().
+     * This method is also called in the bulk activity completion form.
+     *
+     * Only available on moodleform_mod.
+     *
+     * @param stdClass $data the form data to be modified.
+     */
+    public function data_postprocessing($data) {
+        parent::data_postprocessing($data);
+        // Set up completion section even if checkbox is not ticked.
+        if (!empty($data->completionunlocked)) {
+            if (empty($data->completionsubmit)) {
+                $data->completionsubmit = 1;
+            }
+        }
     }
 
     /**

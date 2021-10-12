@@ -100,9 +100,9 @@ class table extends \table_sql {
         $params = [];
 
         // Generate SQL.
-        if (class_exists('\core\user_fields', true)) {
-            $usql = \core\user_fields::for_name()->get_sql('u', true, '', '', false);
-            // REALLY, MOODLE? I need to write MORE code now? For this siple case you could have injected a SHORTCUT method.
+        if (class_exists('\core_user\fields', true)) {
+            $usql = \core_user\fields::for_name()->get_sql('u', true, '', '', false);
+            // REALLY, MOODLE? I need to write MORE code now? For this simple case you could have injected a SHORTCUT method.
             $fields = 'ud.*, ' . $usql->selects;
             $from = '{gwpayments_userdata} ud ';
             $from .= 'JOIN {gwpayments} gwp ON ud.gwpaymentsid = gwp.id ';
@@ -190,7 +190,7 @@ class table extends \table_sql {
      * @return string
      */
     public function get_row_class($row) {
-        if ($row->timeexpire < time()) {
+        if (!empty($row->timeexpire) && $row->timeexpire < time()) {
             return 'alert alert-danger';
         } else {
             return '';

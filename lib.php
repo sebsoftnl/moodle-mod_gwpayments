@@ -29,6 +29,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+// Include functions we whould deprecate in the "near" future.
+require_once(__DIR__ . '/deprecatedlib.php');
+
 /**
  * List of features supported in URL module
  * @param string $feature FEATURE_xx constant for requested feature
@@ -45,7 +48,7 @@ function gwpayments_supports($feature) {
         case FEATURE_MODEDIT_DEFAULT_COMPLETION:
             return false;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false;  // Completion will track views :D.
+            return false;  // Completion will not track views :D.
         case FEATURE_COMPLETION_HAS_RULES:
             return true;  // We have a custom completion mechanism :D.
         case FEATURE_SHOW_DESCRIPTION:
@@ -164,50 +167,6 @@ function gwpayments_delete_instance($id) {
 }
 
 /**
- * Given a course_module object, this function returns any
- * "extra" information that may be needed when printing
- * this activity in a course listing.
- *
- * @param object $coursemodule
- * @return cached_cm_info info
- */
-function gwpayments_get_coursemodule_info($coursemodule) {
-    return null;
-}
-
-/**
- * Obtains the automatic completion state for this gwpayments based on any conditions
- * in settings.
- *
- * @param object $course Course
- * @param object $cm Course-module
- * @param int $userid User ID
- * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
- * @return bool True if completed, false if not, $type if conditions not set.
- */
-function gwpayments_get_completion_state($course, $cm, $userid, $type) {
-    global $DB;
-    $context = \context_module::instance($cm->id);
-    $cansubmitpayment = has_capability('mod/gwpayments:submitpayment', $context, $userid);
-
-    if ($cansubmitpayment && !is_siteadmin($userid)) {
-        // Get user payment details.
-        $gwpayments = $DB->get_record('gwpayments', ['id' => $cm->instance], '*', MUST_EXIST);
-        // We're only "complete" if there's a record and expiry limitations are not met.
-        $userdata = $DB->get_record('gwpayments_userdata', ['gwpaymentsid' => $gwpayments->id, 'userid' => $userid]);
-        $result = false;
-        if (!empty($userdata)) {
-            $result = ((int)$userdata->timeexpire === 0) ? true : ($userdata->timeexpire > time());
-        }
-        return $result;
-    }
-
-    // I'm unsure here. We do not set completion ourself but rely on this method.
-    // We'll simply return false always.
-    return $type;
-}
-
-/**
  * Return a list of page types
  * @param string $pagetype current page type
  * @param stdClass $parentcontext Block's parent context
@@ -227,9 +186,13 @@ function gwpayments_page_type_list($pagetype, $parentcontext, $currentcontext) {
  */
 function gwpayments_cm_info_dynamic(cm_info $modinfo) {
     global $DB, $USER, $OUTPUT;
-    $config = get_config('gwpayments');
 
-    $studentdisplayonpayments = (bool)$config->studentdisplayonpayments;
+    $instance = $DB->get_record('gwpayments', ['id' => $modinfo->instance], '*', MUST_EXIST);
+    $studentdisplayonpayments = (bool)$instance->studentdisplayonpayments;
+    $disablepaymentonmisconfig = (bool)$instance->disablepaymentonmisconfig;
+
+    $notifications = [];
+    $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($modinfo, $notifications);
 
     // We're "complete" if there's a record and expiry limitations are not met.
     $uservisible = false;
@@ -267,7 +230,6 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
     }
     $injectedcontent = '';
     if ($injectpaymentbutton) {
-        $instance = $DB->get_record('gwpayments', ['id' => $modinfo->instance], '*', MUST_EXIST);
         // Create the payment button.
         $data = (object)[
             'isguestuser' => isguestuser(),
@@ -283,10 +245,81 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
         $data->locale = $USER->lang;
         $data->component = 'mod_gwpayments';
         $data->paymentarea = 'unlockfee';
+        $data->disablepaymentbutton = false;
+        $data->hasnotifications = false;
+        if (!$canpaymentbemade && $disablepaymentonmisconfig) {
+            $data->disablepaymentbutton = true;
+        }
+        if (!$canpaymentbemade) {
+            $data->hasnotifications = true;
+            $data->notifications = [get_string('err:payment:misconfiguration', 'mod_gwpayments')];
+        }
         $injectedcontent .= $OUTPUT->render_from_template('mod_gwpayments/payment_region', $data);
+    }
+    if (!empty($notifications) && (has_capability('mod/gwpayments:addinstance', $modinfo->context) || is_siteadmin())) {
+        $injectedcontent = html_writer::div(implode('<br/>', $notifications), 'alert alert-warning');
     }
     if (!empty($injectedcontent)) {
         $modinfo->set_content($modinfo->content . $injectedcontent);
     }
 
+}
+
+/**
+ * Given a course_module object, this function returns any
+ * "extra" information that may be needed when printing
+ * this activity in a course listing.
+ *
+ * @param object $coursemodule
+ * @return cached_cm_info info
+ */
+function gwpayments_get_coursemodule_info($coursemodule) {
+    global $DB;
+
+    $params = ['id' => $coursemodule->instance];
+    if (!$gwpayment = $DB->get_record('gwpayments', $params)) {
+        return false;
+    }
+
+    $result = new cached_cm_info();
+    $result->name = $gwpayment->name;
+
+    if ($coursemodule->showdescription) {
+        // Convert intro to html. Do not filter cached version, filters run at display time.
+        $result->content = format_module_intro('gwpayments', $gwpayment, $coursemodule->id, false);
+    }
+
+    // Populate the custom completion rules as key => value pairs.
+    // Because we force automatic completion and payment is a mandate, there are no extra checks.
+    $result->customdata['customcompletionrules']['completionsubmit'] = 1;
+
+    return $result;
+}
+
+/**
+ * Callback which returns human-readable strings describing the active completion custom rules for the module instance.
+ *
+ * @param cm_info|stdClass $cm object with fields ->completion and ->customdata['customcompletionrules']
+ * @return array $descriptions the array of descriptions for the custom rules.
+ */
+function mod_gwpayments_get_completion_active_rule_descriptions($cm) {
+    // We perform these checks even though automatic completion is forced..
+    if (empty($cm->customdata['customcompletionrules'])
+        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
+        return [];
+    }
+
+    $descriptions = [];
+    foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
+        switch ($key) {
+            case 'completionsubmit':
+                if (!empty($val)) {
+                    $descriptions[] = get_string('completionsubmit', 'mod_gwpayments');
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    return $descriptions;
 }

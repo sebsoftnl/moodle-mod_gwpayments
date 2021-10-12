@@ -81,7 +81,8 @@ class paymentdetails implements renderable, templatable {
         $rs = new stdClass;
 
         if ($this->context instanceof \context_course) {
-            $sql = 'SELECT gwp.*, p.id as paymentid, p.paymentarea
+            $sql = 'SELECT gwp.*,
+                    p.id as paymentid, p.paymentarea
                     FROM {gwpayments} gwp
                     JOIN {gwpayments_userdata} ud ON (ud.gwpaymentsid = gwp.id AND p.userid = ud.userid AND ud.userid = :userid)
                     JOIN {payments} p ON (p.itemid = gwp.id AND p.component = :component)
@@ -93,7 +94,8 @@ class paymentdetails implements renderable, templatable {
                 'courseid' => $this->context->instanceid,
             ];
         } else if ($this->context instanceof \context_module) {
-            $sql = 'SELECT ud.*, p.id as paymentid, p.paymentarea
+            $sql = 'SELECT DISTINCT ud.id, ud.cost, ud.currency, ud.timeexpire, ud.timecreated,
+                    p.id as paymentid, p.paymentarea
                     FROM {gwpayments} gwp
                     JOIN {payments} p ON (p.itemid = gwp.id AND p.component = :component)
                     JOIN {gwpayments_userdata} ud ON (ud.gwpaymentsid = gwp.id AND p.userid = ud.userid AND ud.userid = :userid)
