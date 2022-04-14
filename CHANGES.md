@@ -3,7 +3,8 @@ Version 1.0.2 (build 2021081602)
 ** Resolved #1 (Fatal error after adding to course)
 ** Resolved #2 (custom_completion class added)
 ** Resolved #3 Added backup/restore.
-** Removed MOODLE_INTERNAL checks as per MDLSITE-5967.
+** Removed a number of MOODLE_INTERNAL checks as per MDLSITE-5967.
+** Removed commented LOC that made a reference to "phpcs:ignore". Looks like Moodle CI has NOT implemented this yet.
 
 -----
 
