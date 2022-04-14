@@ -46,8 +46,7 @@ use core_privacy\local\metadata\collection;
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_payment\privacy\consumer_provider,
-    \core_privacy\local\request\data_provider
-{
+    \core_privacy\local\request\data_provider {
 
     /**
      * Provides meta data that is stored about a user with block_coupon

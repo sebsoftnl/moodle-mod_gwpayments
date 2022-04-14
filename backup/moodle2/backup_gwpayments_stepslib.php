@@ -22,8 +22,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Define the complete structure for backup, with file and id annotations.
  *
@@ -67,8 +65,9 @@ class backup_gwpayments_activity_structure_step extends backup_activity_structur
         // For this base, define source, annotate IDs and file annotations.
         $gwpayments->set_source_table('gwpayments', array('id' => backup::VAR_ACTIVITYID));
 
-        // Does not seem to work. I've not been able to find how or where Moodle backs up gateway/account data.
-        //$gwpayments->annotate_ids('payment_accounts', 'accountid'); // phpcs:ignore
+        // No idea how or where Moodle backs up gateway/account data, so we do not include it.
+        // TODO: future implementation/backup of account data?
+        // Did Moodle even think about this at all??
 
         $gwpayments->annotate_files('mod_gwpayments', 'intro', null);
         $gwpayments->annotate_files('mod_gwpayments', 'introattachment', null);
