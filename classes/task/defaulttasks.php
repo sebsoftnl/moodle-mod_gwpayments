@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Default tasks
  *

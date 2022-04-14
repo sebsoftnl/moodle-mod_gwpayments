@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\output;
 
-defined('MOODLE_INTERNAL') or die('NO_ACCESS');
-
 use context;
 
 /**

@@ -1,3 +1,12 @@
+Version 1.0.2 (build 2021081602)
+
+** Resolved #1 (Fatal error after adding to course)
+** Resolved #2 (custom_completion class added)
+** Resolved #3 Added backup/restore.
+** Removed MOODLE_INTERNAL checks as per MDLSITE-5967.
+
+-----
+
 Version 1.0.1 (build 2021081601)
 
 ** Added global default: currency

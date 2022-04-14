@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\output\component;
 
-defined('MOODLE_INTERNAL') or die('NO_ACCESS');
-
 use renderable;
 use templatable;
 use context;

@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The mod_gwpayments course module viewed event class.
  *

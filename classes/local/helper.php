@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\local;
 
-defined('MOODLE_INTERNAL') or die('NO_ACCESS');
-
 /**
  * mod_gwpayments\local\helper
  *

@@ -29,8 +29,6 @@
 
 namespace mod_gwpayments\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The mod_gwpayments instance list viewed event class.
  *
