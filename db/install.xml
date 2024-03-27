@@ -32,7 +32,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="gwpaymentsid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="cost" TYPE="number" LENGTH="7" DECIMALS="3" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cost" TYPE="number" LENGTH="7" DECIMALS="2" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="currency" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timeexpire" TYPE="int" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
