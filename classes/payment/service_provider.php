@@ -113,12 +113,13 @@ class service_provider implements \core_payment\local\callback\service_provider 
         // Delivering the order means we inject a tracking record for the user.
         $instance = $DB->get_record('gwpayments', ['id' => $instanceid], '*', MUST_EXIST);
         $userdata = $DB->get_record('gwpayments_userdata', ['userid' => $userid, 'gwpaymentsid' => $instance->id]);
+        $data = $DB->get_record('payments', ['id' => $paymentid]);
         if (empty($userdata)) {
             $userdata = (object)[
                 'id' => 0,
                 'gwpaymentsid' => $instance->id,
                 'userid' => $userid,
-                'cost' => $instance->cost,
+                'cost' => $data->amount,
                 'currency' => $instance->currency,
                 'timeexpire' => 0,
                 'timecreated' => 0,
