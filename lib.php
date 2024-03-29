@@ -65,6 +65,7 @@ function gwpayments_supports($feature) {
             return false;
         case FEATURE_NO_VIEW_LINK:
             return false;
+        case FEATURE_MOD_PURPOSE: return MOD_PURPOSE_COMMUNICATION;
 
         default:
             return null;
