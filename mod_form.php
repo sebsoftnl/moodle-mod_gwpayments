@@ -73,7 +73,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $mform->addRule('cost', null, 'numeric', null, 'client');
         $mform->setDefault('cost', $config->cost);
         $mform->addHelpButton('cost', 'cost', 'mod_gwpayments');
-
+/*
         // This is used for expiry determination.
         $mform->addElement('duration', 'costduration', get_string('costduration', 'mod_gwpayments'));
         $mform->setDefault('costduration', 0);
@@ -84,7 +84,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $mform->setType('vat', PARAM_RAW);
         $mform->setDefault('vat', $config->vat);
         $mform->addHelpButton('vat', 'vat', 'mod_gwpayments');
-
+*/
         $supportedcurrencies = \mod_gwpayments\local\helper::get_possible_currencies();
         $mform->addElement('select', 'currency', get_string('currency', 'mod_gwpayments'), $supportedcurrencies);
         $mform->setDefault('currency', $config->currency);
