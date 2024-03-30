@@ -67,10 +67,10 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         // -------------------------------------------------------
         $mform->addElement('header', 'content', get_string('contentheader', 'mod_gwpayments'));
 
-        $mform->addElement('text', 'cost', get_string('cost', 'mod_gwpayments'), array('size' => '10'));
-        $mform->setType('cost', PARAM_RAW);
+        $mform->addElement('float', 'cost', get_string('cost', 'mod_gwpayments'));
+//        $mform->setType('cost', PARAM_RAW);
         $mform->addRule('cost', null, 'required', null, 'client');
-        $mform->addRule('cost', null, 'numeric', null, 'client');
+//        $mform->addRule('cost', null, 'numeric', null, 'client');
         $mform->setDefault('cost', $config->cost);
         $mform->addHelpButton('cost', 'cost', 'mod_gwpayments');
 /*
