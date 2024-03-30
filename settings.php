@@ -39,7 +39,7 @@ if ($ADMIN->fulltree) {
         );
         $settings->add(new admin_setting_heading('mod_gwpayments_nocurrency', '', $OUTPUT->render($notify)));
     }
-
+/*
     // Logo.
     $image = '<a href="http://www.sebsoft.nl" target="_new"><img src="' .
             $OUTPUT->image_url('logo', 'mod_gwpayments') . '" /></a>&nbsp;&nbsp;&nbsp;';
@@ -49,7 +49,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('mod_gwpayments_logopromo',
             get_string('promo', 'mod_gwpayments'),
             get_string('promodesc', 'mod_gwpayments', $header)));
-
+*/
     require_once("$CFG->libdir/resourcelib.php");
     // Modedit defaults.
     $settings->add(new admin_setting_heading('urlmodeditdefaults',
@@ -60,9 +60,9 @@ if ($ADMIN->fulltree) {
             get_string('cost', 'mod_gwpayments'),
             '', 10.00, PARAM_FLOAT, 4));
 
-    $settings->add(new admin_setting_configtext('gwpayments/vat',
-            get_string('vat', 'mod_gwpayments'),
-            get_string('vat_help', 'mod_gwpayments'), 21, PARAM_INT, 4));
+//    $settings->add(new admin_setting_configtext('gwpayments/vat',
+//            get_string('vat', 'mod_gwpayments'),
+//            get_string('vat_help', 'mod_gwpayments'), 21, PARAM_INT, 4));
 
     if (!empty($currencies)) {
         $settings->add(new admin_setting_configselect('gwpayments/currency',
