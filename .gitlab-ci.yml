@@ -54,10 +54,15 @@ variables:
 
 
 # Add more versions if you want/need.
-Moodle 4.5:
+Moodle 5.0:
   <<: *job_definition
   variables:
     MOODLE_BRANCH: "main"
+
+Moodle 4.5:
+  <<: *job_definition
+  variables:
+    MOODLE_BRANCH: "MOODLE_405_STABLE"
 
 Moodle 4.4:
   <<: *job_definition
