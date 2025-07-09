@@ -1,3 +1,4 @@
+
 variables:
   PLUGIN: 'mod_gwpayments'
   PATHNAME: 'mod/gwpayments'
