@@ -22,8 +22,8 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,8 +36,8 @@ use core_completion\activity_custom_completion;
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion extends activity_custom_completion {
@@ -48,9 +48,7 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public static function get_defined_custom_rules(): array {
-        return [
-            'completionsubmit'
-        ];
+        return ['completionsubmit'];
     }
 
     /**
@@ -59,9 +57,7 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public function get_custom_rule_descriptions(): array {
-        return [
-            'completionsubmit' => get_string('completiondetail:submit', 'mod_gwpayments')
-        ];
+        return ['completionsubmit' => get_string('completiondetail:submit', 'mod_gwpayments')];
     }
 
     /**
@@ -70,9 +66,7 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public function get_sort_order(): array {
-        return [
-            'completionsubmit',
-        ];
+        return ['completionsubmit'];
     }
 
     /**

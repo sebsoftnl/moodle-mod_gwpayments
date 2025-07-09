@@ -260,7 +260,7 @@ object code work.
 A &ldquo;User Product&rdquo; is either (1) a &ldquo;consumer product&rdquo;, which
 means any tangible personal property which is normally used for personal, family, or
 household purposes, or (2) anything designed or sold for incorporation into a
-dwelling. In determining whether a product is a consumer product, doubtful cases
+dwellIn determining whether a product is a consumer product, doubtful cases
 shall be resolved in favor of coverage. For a particular product received by a
 particular user, &ldquo;normally used&rdquo; refers to a typical or common use of
 that class of product, regardless of the status of the particular user or of the way

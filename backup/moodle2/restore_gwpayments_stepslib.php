@@ -18,7 +18,7 @@
  * All the steps to restore mod_gwpayments are defined here.
  *
  * @package     mod_gwpayments
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,7 +31,7 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_gwpayments_activity_structure_step extends restore_activity_structure_step {
@@ -42,7 +42,7 @@ class restore_gwpayments_activity_structure_step extends restore_activity_struct
      * @return restore_path_element[].
      */
     protected function define_structure() {
-        $paths = array();
+        $paths = [];
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated.
@@ -69,7 +69,6 @@ class restore_gwpayments_activity_structure_step extends restore_activity_struct
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        // TODO: revise this when more is known about account/pgw backup/restore.
         // For now we completely set the account to "NULL".
         // I know; this forces the activity module into "inactive" mode. So be it.
         $data->accountid = null;

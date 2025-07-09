@@ -22,8 +22,8 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -76,7 +76,7 @@ function gwpayments_supports($feature) {
  * @return array
  */
 function gwpayments_get_extra_capabilities() {
-    return array('moodle/site:accessallgroups');
+    return ['moodle/site:accessallgroups'];
 }
 
 /**
@@ -85,7 +85,7 @@ function gwpayments_get_extra_capabilities() {
  * @return array status array
  */
 function gwpayments_reset_userdata($data) {
-    return array();
+    return [];
 }
 
 /**
@@ -99,7 +99,7 @@ function gwpayments_reset_userdata($data) {
  * @return array
  */
 function gwpayments_get_view_actions() {
-    return array('view', 'view all');
+    return ['view', 'view all'];
 }
 
 /**
@@ -113,7 +113,7 @@ function gwpayments_get_view_actions() {
  * @return array
  */
 function gwpayments_get_post_actions() {
-    return array('update', 'add');
+    return ['update', 'add'];
 }
 
 /**
@@ -156,12 +156,12 @@ function gwpayments_update_instance($data, $mform) {
 function gwpayments_delete_instance($id) {
     global $DB;
 
-    if (!$gwpayments = $DB->get_record('gwpayments', array('id' => $id))) {
+    if (!$gwpayments = $DB->get_record('gwpayments', ['id' => $id])) {
         return false;
     }
 
     // Note: all context files are deleted automatically.
-    $DB->delete_records('gwpayments', array('id' => $gwpayments->id));
+    $DB->delete_records('gwpayments', ['id' => $gwpayments->id]);
 
     return true;
 }
@@ -173,7 +173,7 @@ function gwpayments_delete_instance($id) {
  * @param stdClass $currentcontext Current context of block
  */
 function gwpayments_page_type_list($pagetype, $parentcontext, $currentcontext) {
-    $modulepagetype = array('mod-gwpayments-*' => get_string('page-mod-gwpayments-x', 'mod_gwpayments'));
+    $modulepagetype = ['mod-gwpayments-*' => get_string('page-mod-gwpayments-x', 'mod_gwpayments')];
     return $modulepagetype;
 }
 
@@ -193,6 +193,9 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
 
     $notifications = [];
     $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($modinfo, $notifications);
+
+    $origuservisible = $modinfo->get_user_visible();
+    $origavailable = $modinfo->available;
 
     // We're "complete" if there's a record and expiry limitations are not met.
     $uservisible = false;
@@ -222,9 +225,12 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
         $available = true;
     }
 
+    $finalvisible = $uservisible && $origuservisible;
+    $finalavailable = $available && $origavailable;
+
     // We first must set availability/visibility before setting dynamic content (as this changes state)!
-    $modinfo->set_user_visible($uservisible);
-    $modinfo->set_available($available);
+    $modinfo->set_user_visible($finalvisible);
+    $modinfo->set_available($finalavailable);
     if ($noviewlink) {
         $modinfo->set_no_view_link();
     }
@@ -256,13 +262,13 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
         }
         $injectedcontent .= $OUTPUT->render_from_template('mod_gwpayments/payment_region', $data);
     }
+
     if (!empty($notifications) && (has_capability('mod/gwpayments:addinstance', $modinfo->context) || is_siteadmin())) {
         $injectedcontent = html_writer::div(implode('<br/>', $notifications), 'alert alert-warning');
     }
-    if (!empty($injectedcontent)) {
-        $modinfo->set_content($modinfo->content . $injectedcontent);
+    if (!empty($injectedcontent) && $finalvisible) {
+        $modinfo->set_content($modinfo->content . $injectedcontent, true);
     }
-
 }
 
 /**

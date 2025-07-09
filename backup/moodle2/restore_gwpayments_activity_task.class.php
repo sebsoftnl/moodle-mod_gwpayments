@@ -18,7 +18,7 @@
  * The task that provides a complete restore of mod_gwpayments is defined here.
  *
  * @package     mod_gwpayments
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +35,7 @@ require_once($CFG->dirroot.'//mod/gwpayments/backup/moodle2/restore_gwpayments_s
  *
  * @package     mod_gwpayments
  *
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_gwpayments_activity_task extends restore_activity_task {
@@ -62,10 +62,10 @@ class restore_gwpayments_activity_task extends restore_activity_task {
      * @return array.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
         // Define the contents.
-        $contents[] = new restore_decode_content('gwpayments', array('intro'), 'gwpayments');
+        $contents[] = new restore_decode_content('gwpayments', ['intro'], 'gwpayments');
 
         return $contents;
     }
@@ -76,7 +76,7 @@ class restore_gwpayments_activity_task extends restore_activity_task {
      * @return array.
      */
     public static function define_decode_rules() {
-        $rules = array();
+        $rules = [];
 
         // Define the rules.
 
@@ -98,7 +98,7 @@ class restore_gwpayments_activity_task extends restore_activity_task {
      * @return array.
      */
     public static function define_restore_log_rules() {
-        $rules = array();
+        $rules = [];
 
         // Define the rules.
         $rules[] = new restore_log_rule('gwpayments', 'add', 'view.php?id={course_module}', '{gwpayments}');

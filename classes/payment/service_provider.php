@@ -22,8 +22,8 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,8 +34,8 @@ namespace mod_gwpayments\payment;
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class service_provider implements \core_payment\local\callback\service_provider {
@@ -55,7 +55,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $result = (object) [
             'amount' => $instance->cost,
             'currency' => $instance->currency,
-            'accountid' => $instance->accountid
+            'accountid' => $instance->accountid,
         ];
 
         // For now we do NOT yet modify any data (such as discount codes).
@@ -122,7 +122,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
                 'currency' => $instance->currency,
                 'timeexpire' => 0,
                 'timecreated' => 0,
-                'timemodified' => 0
+                'timemodified' => 0,
             ];
         }
         if (!empty($instance->costduration)) {

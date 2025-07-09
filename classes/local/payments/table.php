@@ -22,14 +22,14 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_gwpayments\local\payments;
 
-defined('MOODLE_INTERNAL') or die('NO_ACCESS');
+defined('MOODLE_INTERNAL') || die('NO_ACCESS');
 
 require_once($CFG->libdir . '/tablelib.php');
 
@@ -38,8 +38,8 @@ require_once($CFG->libdir . '/tablelib.php');
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table extends \table_sql {
@@ -69,10 +69,10 @@ class table extends \table_sql {
      * @param string $fields
      * @param string $from
      * @param string $where
-     * @param array $params
+     * @param array|null $params
      * @throws exception
      */
-    public function set_sql($fields, $from, $where, array $params = null) {
+    public function set_sql($fields, $from, $where, ?array $params = null) {
         // We'll disable this method.
         throw new exception('err:table:set_sql');
     }
@@ -84,14 +84,14 @@ class table extends \table_sql {
      * @param bool $useinitialsbar
      */
     public function render($pagesize, $useinitialsbar = true) {
-        $columns = array('fullname', 'cost', 'timecreated', 'timeexpire', 'status');
-        $headers = array(
+        $columns = ['fullname', 'cost', 'timecreated', 'timeexpire', 'status'];
+        $headers = [
             get_string('fullname'),
             get_string('amount', 'mod_gwpayments'),
             get_string('timecreated', 'mod_gwpayments'),
             get_string('timeexpire', 'mod_gwpayments'),
             get_string('status', 'mod_gwpayments'),
-        );
+        ];
 
         $this->define_columns($columns);
         $this->define_headers($headers);

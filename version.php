@@ -22,14 +22,16 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version     = 2021081602;
-$plugin->requires    = 2021051700; // Moodle 3.11+.
+$plugin->version     = 2025070900;
+$plugin->requires    = 2022041900; // Moodle 4.0+.
 $plugin->component = 'mod_gwpayments';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.2 (build 2021081602)';
+$plugin->release = '1.0.3 (build 2025070900)';
+$plugin->dependencies = [];
+$plugin->supported = [400, 500];

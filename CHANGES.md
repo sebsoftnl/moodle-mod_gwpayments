@@ -1,3 +1,10 @@
+Version 1.0.3 (build 2023011600)
+
+** Resolved #5 -- item always showed up. Now also taking original visibility/availability into account.
+** Resolved #6 -- $modinfo->set_content() should be called with "$isformatted = true".
+
+-----
+
 Version 1.0.2 (build 2021081602)
 
 ** Resolved #1 (Fatal error after adding to course)

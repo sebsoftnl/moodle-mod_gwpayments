@@ -22,22 +22,20 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require('../../config.php');
 
 $id = required_param('id', PARAM_INT); // Course id.
-$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 
 require_course_login($course, true);
 $PAGE->set_pagelayout('incourse');
 
-$params = array(
-    'context' => context_course::instance($course->id)
-);
+$params = ['context' => context_course::instance($course->id)];
 $event = \mod_gwpayments\event\course_module_instance_list_viewed::create($params);
 $event->add_record_snapshot('course', $course);
 $event->trigger();
@@ -48,7 +46,7 @@ $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
 
-$PAGE->set_url('/mod/gwpayments/index.php', array('id' => $course->id));
+$PAGE->set_url('/mod/gwpayments/index.php', ['id' => $course->id]);
 $PAGE->set_title($course->shortname.': '.$strmodnameplural);
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add($strmodnameplural);
@@ -68,11 +66,11 @@ $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
     $strsectionname = get_string('sectionname', 'format_'.$course->format);
-    $table->head  = array ($strsectionname, $strname, $strintro);
-    $table->align = array ('center', 'left', 'left');
+    $table->head  = [$strsectionname, $strname, $strintro];
+    $table->align = ['center', 'left', 'left'];
 } else {
-    $table->head  = array ($strlastmodified, $strname, $strintro);
-    $table->align = array ('left', 'left', 'left');
+    $table->head  = [$strlastmodified, $strname, $strintro];
+    $table->align = ['left', 'left', 'left'];
 }
 
 $modinfo = get_fast_modinfo($course);
@@ -102,10 +100,11 @@ foreach ($gwpayments as $gwpayment) {
     }
 
     $class = $gwpayment->visible ? '' : 'class="dimmed"'; // Hidden modules are dimmed.
-    $table->data[] = array (
+    $table->data[] = [
         $printsection,
         "<a $class $extra href=\"view.php?id=$cm->id\">".$icon.format_string($gwpayment->name)."</a>",
-        format_module_intro('gwpayments', $gwpayment, $cm->id));
+        format_module_intro('gwpayments', $gwpayment, $cm->id),
+    ];
 }
 
 echo html_writer::table($table);

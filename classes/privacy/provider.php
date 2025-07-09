@@ -22,8 +22,8 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   Ing. R.J. van Dongen
- * @author      R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -39,8 +39,8 @@ use core_privacy\local\metadata\collection;
  *
  * @package     mod_gwpayments
  *
- * @copyright   Ing. R.J. van Dongen
- * @author      R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
@@ -54,7 +54,7 @@ class provider implements
      * @param  collection $collection A collection of meta data items to be added to.
      * @return  collection Returns the collection of metadata.
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
             'gwpayments_userdata',
             [
@@ -65,7 +65,7 @@ class provider implements
                 'timemodified' => 'privacy:metadata:database:gwpayments:timemodified',
                 'timeexpire' => 'privacy:metadata:database:gwpayments:timeexpire',
             ],
-            'privacy:metadata:database:gwpayments'
+            'privacy:metadata:database:gwpayments',
         );
         return $collection;
     }

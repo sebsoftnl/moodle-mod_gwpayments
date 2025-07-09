@@ -18,7 +18,7 @@
  * Backup steps for mod_gwpayments are defined here.
  *
  * @package     mod_gwpayments
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,7 +31,7 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_gwpayments_activity_structure_step extends backup_activity_structure_step {
@@ -48,25 +48,24 @@ class backup_gwpayments_activity_structure_step extends backup_activity_structur
         $groupinfo = $this->get_setting_value('groups');
 
         // Replace with the attributes and final elements that the element will handle.
-        $gwpayments = new backup_nested_element('gwpayments', ['id'],
-                                            array('name',
-                                                  'intro',
-                                                  'introformat',
-                                                  'accountid',
-                                                  'cost',
-                                                  'vat',
-                                                  'currency',
-                                                  'studentdisplayonpayments',
-                                                  'disablepaymentonmisconfig',
-                                                  'timecreated',
-                                                  'timemodified',
-                                                ));
+        $gwpayments = new backup_nested_element('gwpayments', ['id'], [
+            'name',
+            'intro',
+            'introformat',
+            'accountid',
+            'cost',
+            'vat',
+            'currency',
+            'studentdisplayonpayments',
+            'disablepaymentonmisconfig',
+            'timecreated',
+            'timemodified',
+        ]);
 
         // For this base, define source, annotate IDs and file annotations.
-        $gwpayments->set_source_table('gwpayments', array('id' => backup::VAR_ACTIVITYID));
+        $gwpayments->set_source_table('gwpayments', ['id' => backup::VAR_ACTIVITYID]);
 
         // No idea how or where Moodle backs up gateway/account data, so we do not include it.
-        // TODO: future implementation/backup of account data?
         // Did Moodle even think about this at all??
 
         $gwpayments->annotate_files('mod_gwpayments', 'intro', null);
@@ -88,18 +87,18 @@ class backup_gwpayments_activity_structure_step extends backup_activity_structur
     private function define_user_structure(backup_nested_element $entrypoint) {
         $userdata = new backup_nested_element('userdata');
         $dataitem = new backup_nested_element('userpayment', ['id'], [
-                                                'userid',
-                                                'cost',
-                                                'currency',
-                                                'timeexpire',
-                                                'timecreated',
-                                                'timemodified',
-                                            ]);
+            'userid',
+            'cost',
+            'currency',
+            'timeexpire',
+            'timecreated',
+            'timemodified',
+        ]);
         // Setup tree.
         $entrypoint->add_child($userdata);
         $userdata->add_child($dataitem);
         // Define sources.
-        $dataitem->set_source_table('gwpayments_userdata', array('gwpaymentsid' => backup::VAR_PARENTID));
+        $dataitem->set_source_table('gwpayments_userdata', ['gwpaymentsid' => backup::VAR_PARENTID]);
         // Define id annotations.
         $dataitem->annotate_ids('user', 'userid');
     }

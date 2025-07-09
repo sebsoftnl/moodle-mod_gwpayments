@@ -18,7 +18,7 @@
  * The task that provides all the steps to perform a complete backup is defined here.
  *
  * @package     mod_gwpayments
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '//mod/gwpayments/backup/moodle2/backup_gwpayments_
  *
  * @package     mod_gwpayments
  *
- * @copyright   2022 R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2022 RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_gwpayments_activity_task extends backup_activity_task {

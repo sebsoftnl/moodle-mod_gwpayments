@@ -22,8 +22,8 @@
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,8 +36,8 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
  *
  * @package     mod_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_gwpayments_mod_form extends moodleform_mod {
@@ -53,7 +53,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
 
         // -------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
-        $mform->addElement('text', 'name', get_string('name'), array('size' => '48'));
+        $mform->addElement('text', 'name', get_string('name'), ['size' => '48']);
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -67,7 +67,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         // -------------------------------------------------------
         $mform->addElement('header', 'content', get_string('contentheader', 'mod_gwpayments'));
 
-        $mform->addElement('text', 'cost', get_string('cost', 'mod_gwpayments'), array('size' => '10'));
+        $mform->addElement('text', 'cost', get_string('cost', 'mod_gwpayments'), ['size' => '10']);
         $mform->setType('cost', PARAM_RAW);
         $mform->addRule('cost', null, 'required', null, 'client');
         $mform->addRule('cost', null, 'numeric', null, 'client');
@@ -80,7 +80,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $mform->addRule('costduration', null, 'required', null, 'client');
         $mform->addHelpButton('costduration', 'costduration', 'mod_gwpayments');
 
-        $mform->addElement('text', 'vat', get_string('vat', 'mod_gwpayments'), array('size' => 4));
+        $mform->addElement('text', 'vat', get_string('vat', 'mod_gwpayments'), ['size' => 4]);
         $mform->setType('vat', PARAM_RAW);
         $mform->setDefault('vat', $config->vat);
         $mform->addHelpButton('vat', 'vat', 'mod_gwpayments');
@@ -149,7 +149,7 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $mform->addElement('static', '_completionsubmit', '', $img . ' ' . get_string('completionsubmit', 'mod_gwpayments'));
         $mform->addElement('hidden', 'completionsubmit', 1);
         $mform->setType('completionsubmit', PARAM_INT);
-        return array('_completionsubmit', 'completionsubmit');
+        return ['_completionsubmit', 'completionsubmit'];
     }
 
     /**

@@ -23,15 +23,15 @@
  * @package     mod_gwpayments
  * @category    log
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
-$logs = array(
-    array('module' => 'gwpayments', 'action' => 'view', 'mtable' => 'gwpayments', 'field' => 'name'),
-    array('module' => 'gwpayments', 'action' => 'view all', 'mtable' => 'gwpayments', 'field' => 'name'),
-    array('module' => 'gwpayments', 'action' => 'update', 'mtable' => 'gwpayments', 'field' => 'name'),
-    array('module' => 'gwpayments', 'action' => 'add', 'mtable' => 'gwpayments', 'field' => 'name'),
-);
+$logs = [
+    ['module' => 'gwpayments', 'action' => 'view', 'mtable' => 'gwpayments', 'field' => 'name'],
+    ['module' => 'gwpayments', 'action' => 'view all', 'mtable' => 'gwpayments', 'field' => 'name'],
+    ['module' => 'gwpayments', 'action' => 'update', 'mtable' => 'gwpayments', 'field' => 'name'],
+    ['module' => 'gwpayments', 'action' => 'add', 'mtable' => 'gwpayments', 'field' => 'name'],
+];
