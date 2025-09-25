@@ -178,100 +178,6 @@ function gwpayments_page_type_list($pagetype, $parentcontext, $currentcontext) {
 }
 
 /**
- * Get dynamic modinfo.
- *
- * This will manipulate the course module's visibility and how it's shown based on payment status.
- *
- * @param cm_info $modinfo
- */
-function gwpayments_cm_info_dynamic(cm_info $modinfo) {
-    global $DB, $USER, $OUTPUT;
-
-    $instance = $DB->get_record('gwpayments', ['id' => $modinfo->instance], '*', MUST_EXIST);
-    $studentdisplayonpayments = (bool)$instance->studentdisplayonpayments;
-    $disablepaymentonmisconfig = (bool)$instance->disablepaymentonmisconfig;
-
-    $notifications = [];
-    $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($modinfo, $notifications);
-
-    $origuservisible = $modinfo->get_user_visible();
-    $origavailable = $modinfo->available;
-
-    // We're "complete" if there's a record and expiry limitations are not met.
-    $uservisible = false;
-    $available = true;
-    $noviewlink = false;
-    $injectpaymentbutton = false;
-    if (has_capability('mod/gwpayments:submitpayment', $modinfo->context) && !is_siteadmin()) {
-        // For those that can submit gwpayments.
-        $noviewlink = !$studentdisplayonpayments;
-        $userdata = $DB->get_record_sql('SELECT * FROM {gwpayments_userdata}
-                WHERE gwpaymentsid = ?
-                AND userid = ?',
-                [$modinfo->instance, $USER->id]);
-        if (empty($userdata)) {
-            $uservisible = true;
-            $injectpaymentbutton = true;
-        } else if ((int)$userdata->timeexpire > 0 && (int)$userdata->timeexpire < time()) {
-            $uservisible = true;
-            $injectpaymentbutton = true;
-        } else if ((int)$userdata->timeexpire === 0) {
-            $uservisible = $studentdisplayonpayments;
-            $available = $studentdisplayonpayments;
-        }
-    } else {
-        // For eveyone else.
-        $uservisible = true;
-        $available = true;
-    }
-
-    $finalvisible = $uservisible && $origuservisible;
-    $finalavailable = $available && $origavailable;
-
-    // We first must set availability/visibility before setting dynamic content (as this changes state)!
-    $modinfo->set_user_visible($finalvisible);
-    $modinfo->set_available($finalavailable);
-    if ($noviewlink) {
-        $modinfo->set_no_view_link();
-    }
-    $injectedcontent = '';
-    if ($injectpaymentbutton) {
-        // Create the payment button.
-        $data = (object)[
-            'isguestuser' => isguestuser(),
-            'cost' => \core_payment\helper::get_cost_as_string($instance->cost, $instance->currency),
-            'instanceid' => $instance->id,
-            'description' => $modinfo->get_formatted_name(),
-            'successurl' => \mod_gwpayments\payment\service_provider::get_success_url('gwpayments', $instance->id)->out(false),
-        ];
-        $data->userid = $USER->id;
-        $data->currency = $instance->currency;
-        $data->vat = (int)$instance->vat;
-        $data->localisedcost = format_float($instance->cost, 2, true);
-        $data->locale = $USER->lang;
-        $data->component = 'mod_gwpayments';
-        $data->paymentarea = 'unlockfee';
-        $data->disablepaymentbutton = false;
-        $data->hasnotifications = false;
-        if (!$canpaymentbemade && $disablepaymentonmisconfig) {
-            $data->disablepaymentbutton = true;
-        }
-        if (!$canpaymentbemade) {
-            $data->hasnotifications = true;
-            $data->notifications = [get_string('err:payment:misconfiguration', 'mod_gwpayments')];
-        }
-        $injectedcontent .= $OUTPUT->render_from_template('mod_gwpayments/payment_region', $data);
-    }
-
-    if (!empty($notifications) && (has_capability('mod/gwpayments:addinstance', $modinfo->context) || is_siteadmin())) {
-        $injectedcontent = html_writer::div(implode('<br/>', $notifications), 'alert alert-warning');
-    }
-    if (!empty($injectedcontent) && $finalvisible) {
-        $modinfo->set_content($modinfo->content . $injectedcontent, true);
-    }
-}
-
-/**
  * Given a course_module object, this function returns any
  * "extra" information that may be needed when printing
  * this activity in a course listing.
@@ -328,4 +234,154 @@ function mod_gwpayments_get_completion_active_rule_descriptions($cm) {
         }
     }
     return $descriptions;
+}
+
+/**
+ * Get dynamic modinfo.
+ *
+ * This will manipulate the course module's visibility and how it's shown based on payment status.
+ *
+ * @param cm_info $modinfo
+ */
+function gwpayments_cm_info_dynamic(cm_info $modinfo) {
+    global $DB, $USER, $PAGE;
+
+    $instance = $DB->get_record('gwpayments', ['id' => $modinfo->instance], '*', MUST_EXIST);
+    $studentdisplayonpayments = (bool)$instance->studentdisplayonpayments;
+    $notifications = [];
+    $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($modinfo, $notifications);
+
+    $origuservisible = $modinfo->get_user_visible();
+    $origavailable = $modinfo->available;
+
+    // We're "complete" if there's a record and expiry limitations are not met.
+    $uservisible = false;
+    $available = true;
+    $noviewlink = false;
+    $injectpaymentbutton = false;
+    if (has_capability('mod/gwpayments:submitpayment', $modinfo->context) && !is_siteadmin()) {
+        // For those that can submit gwpayments.
+        $noviewlink = !$studentdisplayonpayments;
+        $userdata = $DB->get_record_sql('SELECT * FROM {gwpayments_userdata}
+                WHERE gwpaymentsid = ?
+                AND userid = ?',
+                [$modinfo->instance, $USER->id]);
+        if (empty($userdata)) {
+            $uservisible = true;
+            $injectpaymentbutton = true;
+        } else if ((int)$userdata->timeexpire > 0 && (int)$userdata->timeexpire < time()) {
+            $uservisible = true;
+            $injectpaymentbutton = true;
+        } else if ((int)$userdata->timeexpire === 0) {
+            $uservisible = $studentdisplayonpayments;
+            $available = $studentdisplayonpayments;
+        }
+    } else {
+        // For eveyone else.
+        $uservisible = true;
+        $available = true;
+    }
+
+    $finalvisible = $uservisible && $origuservisible;
+    $finalavailable = $available && $origavailable;
+
+    // We first must set availability/visibility before setting dynamic content (as this changes state)!
+    $modinfo->set_user_visible($finalvisible);
+    $modinfo->set_available($finalavailable);
+    if ($noviewlink) {
+        $modinfo->set_no_view_link();
+    }
+    $injectedcontent = '';
+
+    $pagepath = $PAGE->url->get_path();
+    $oncoursepage = (bool)preg_match('/^\/course\/(view|section)/i', $pagepath);
+
+    if ($injectpaymentbutton && $oncoursepage && $finalvisible) {
+        if (!$canpaymentbemade) {
+            $injectedcontent .= '<div class="alert alert-danger">';
+            $injectedcontent .= get_string('err:payment:misconfiguration', 'mod_gwpayments');
+            $injectedcontent .= '</div>';
+        } else {
+            // Using JS to inject, because every attempt to do this using a renderer fails!
+            $injectedcontent .= '<div id="mod-gwpayments-region-' . $instance->id .
+                    '" data-cmid="' . $modinfo->id .
+                    '" data-id="' . $instance->id .
+                    '" data-contextid="' . $modinfo->context->id . '"></div>';
+            $PAGE->requires->js_call_amd('mod_gwpayments/injectpaymentregion', 'init', ['#mod-gwpayments-region-' . $instance->id]);
+        }
+    }
+
+    if (!empty($notifications) && (has_capability('mod/gwpayments:addinstance', $modinfo->context) || is_siteadmin())) {
+        $injectedcontent .= html_writer::div(implode('<br/>', $notifications), 'alert alert-warning');
+    }
+    if (!empty($injectedcontent) && $finalvisible) {
+        $modinfo->set_content($modinfo->content . $injectedcontent, true);
+    }
+}
+
+/**
+ * Output payment region fragment
+ *
+ * @param array $args
+ * @return null|string
+ */
+function mod_gwpayments_output_fragment_paymentregion($args) {
+    global $DB, $USER, $PAGE;
+    $context = $args['context'];
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return '';
+    }
+
+    $id = $args['id'];
+    $instance = $DB->get_record('gwpayments', ['id' => $id], '*', MUST_EXIST);
+    [$course, $cm] = get_course_and_cm_from_instance($instance->id, 'gwpayments');
+
+    $disablepaymentonmisconfig = (bool)$instance->disablepaymentonmisconfig;
+    $notifications = [];
+    $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($cm, $notifications);
+    $injectpaymentbutton = false;
+    if (has_capability('mod/gwpayments:submitpayment', $cm->context) && !is_siteadmin()) {
+        // For those that can submit gwpayments.
+        $userdata = $DB->get_record_sql('SELECT * FROM {gwpayments_userdata}
+                WHERE gwpaymentsid = ?
+                AND userid = ?',
+                [$cm->instance, $USER->id]);
+        if (empty($userdata)) {
+            $injectpaymentbutton = true;
+        } else if ((int)$userdata->timeexpire > 0 && (int)$userdata->timeexpire < time()) {
+            $injectpaymentbutton = true;
+        } else if ((int)$userdata->timeexpire === 0) {
+            $injectpaymentbutton = true;
+        }
+    }
+
+    if ($injectpaymentbutton) {
+        // Create the payment button.
+        $data = (object)[
+            'isguestuser' => isguestuser(),
+            'cost' => \core_payment\helper::get_cost_as_string($instance->cost, $instance->currency),
+            'instanceid' => $instance->id,
+            'description' => $cm->get_formatted_name(),
+            'successurl' => \mod_gwpayments\payment\service_provider::get_success_url('gwpayments', $instance->id)->out(false),
+        ];
+        $data->userid = $USER->id;
+        $data->currency = $instance->currency;
+        $data->vat = (int)$instance->vat;
+        $data->localisedcost = format_float($instance->cost, 2, true);
+        $data->locale = $USER->lang;
+        $data->component = 'mod_gwpayments';
+        $data->paymentarea = 'unlockfee';
+        $data->disablepaymentbutton = false;
+        $data->hasnotifications = false;
+        if (!$canpaymentbemade && $disablepaymentonmisconfig) {
+            $data->disablepaymentbutton = true;
+        }
+        if (!$canpaymentbemade) {
+            $data->hasnotifications = true;
+            $data->notifications = [get_string('err:payment:misconfiguration', 'mod_gwpayments')];
+        }
+        $r = $PAGE->get_renderer('mod_gwpayments');
+        return $r->render_from_template('mod_gwpayments/payment_region', $data);
+    }
+    return '';
 }

@@ -196,7 +196,7 @@ class provider implements
             $sql = "SELECT p.id
                     FROM {payments} p
                     JOIN {gwpayments} gwp ON p.itemid = gwp.id
-                    WHERE gwp.courseid = :courseid AND p.component = :component";
+                    WHERE gwp.course = :courseid AND p.component = :component";
             $params = [
                 'component' => 'mod_gwpayments',
                 'courseid' => $context->instanceid,

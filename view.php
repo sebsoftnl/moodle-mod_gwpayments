@@ -38,7 +38,7 @@ $gwpayment = $DB->get_record('gwpayments', ['id' => $cm->instance], '*', MUST_EX
 
 $PAGE->set_url('/mod/gwpayments/view.php', ['id' => $cm->id]);
 
-require_course_login($course, true, $cm);
+require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/gwpayments:view', $context);
 
