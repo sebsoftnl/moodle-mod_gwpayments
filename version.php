@@ -34,4 +34,4 @@ $plugin->component = 'mod_gwpayments';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.0.4 (build 2025120100)';
 $plugin->dependencies = [];
-$plugin->supported = [402];
+$plugin->supported = [402, 502];
