@@ -41,7 +41,6 @@ use core_completion\activity_custom_completion;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion extends activity_custom_completion {
-
     /**
      * Fetch the list of custom completion rules that this module defines.
      *
@@ -96,5 +95,4 @@ class custom_completion extends activity_custom_completion {
         }
         return COMPLETION_INCOMPLETE;
     }
-
 }

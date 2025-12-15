@@ -33,7 +33,7 @@ $id = required_param('id', PARAM_INT);
 $redirect = optional_param('redirect', 0, PARAM_BOOL);
 $referer = optional_param('referer', null, PARAM_URL);
 
-list($course, $cm) = get_course_and_cm_from_cmid($id, 'gwpayments');
+[$course, $cm] = get_course_and_cm_from_cmid($id, 'gwpayments');
 $gwpayment = $DB->get_record('gwpayments', ['id' => $cm->instance], '*', MUST_EXIST);
 
 $PAGE->set_url('/mod/gwpayments/view.php', ['id' => $cm->id]);
@@ -43,7 +43,7 @@ $context = context_module::instance($cm->id);
 require_capability('mod/gwpayments:view', $context);
 
 $PAGE->set_activity_record($gwpayment);
-$PAGE->set_title($course->shortname.': '.$gwpayment->name);
+$PAGE->set_title($course->shortname . ': ' . $gwpayment->name);
 $PAGE->set_heading($course->fullname);
 $params = [
     'context' => $context,
@@ -59,10 +59,12 @@ $event->trigger();
 if (isguestuser()) {
     // Guest account.
     echo $OUTPUT->header();
-    echo $OUTPUT->confirm(get_string('noguestchoose', 'choice').'<br /><br />'.get_string('liketologin'),
-                 get_login_url(), new moodle_url('/course/view.php', ['id' => $course->id]));
+    echo $OUTPUT->confirm(
+        get_string('noguestchoose', 'choice') . '<br /><br />' . get_string('liketologin'),
+        get_login_url(),
+        new moodle_url('/course/view.php', ['id' => $course->id])
+    );
     echo $OUTPUT->footer();
-
 } else if (!is_enrolled($context) && !is_siteadmin()) {
     // Only people enrolled can do anything.
     $SESSION->wantsurl = qualified_me();
@@ -73,16 +75,16 @@ if (isguestuser()) {
 
     echo $OUTPUT->header();
     echo $OUTPUT->box_start('generalbox', 'notice');
-    echo '<p align="center">'. get_string('notenrolledchoose', 'mod_gwpayments') .'</p>';
+    echo '<p align="center">' . get_string('notenrolledchoose', 'mod_gwpayments') . '</p>';
     echo $OUTPUT->container_start('continuebutton');
-    echo $OUTPUT->single_button(new moodle_url('/enrol/index.php?',
-            ['id' => $course->id]), get_string('enrolme', 'core_enrol', $courseshortname));
+    echo $OUTPUT->single_button(
+        new moodle_url('/enrol/index.php?', ['id' => $course->id]),
+        get_string('enrolme', 'core_enrol', $courseshortname)
+    );
     echo $OUTPUT->container_end();
     echo $OUTPUT->box_end();
     echo $OUTPUT->footer();
-
 } else {
-
     $renderer = $PAGE->get_renderer('mod_gwpayments');
     // We can only see the overview when we have the correct capabilities.
     if (has_capability('mod/gwpayments:viewpayments', $context) || is_siteadmin()) {

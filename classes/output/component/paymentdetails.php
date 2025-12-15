@@ -44,7 +44,6 @@ use stdClass;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class paymentdetails implements renderable, templatable {
-
     /**
      * @var context
      */
@@ -76,7 +75,7 @@ class paymentdetails implements renderable, templatable {
      */
     public function export_for_template(\renderer_base $output) {
         global $DB;
-        $rs = new stdClass;
+        $rs = new stdClass();
 
         if ($this->context instanceof \context_course) {
             $sql = 'SELECT gwp.*,
@@ -118,5 +117,4 @@ class paymentdetails implements renderable, templatable {
 
         return $rs;
     }
-
 }

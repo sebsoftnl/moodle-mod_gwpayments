@@ -38,7 +38,7 @@ require_once(__DIR__ . '/deprecatedlib.php');
  * @return mixed True if module supports feature, false if not, null if doesn't know
  */
 function gwpayments_supports($feature) {
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_MOD_ARCHETYPE:
             return MOD_ARCHETYPE_OTHER;
         case FEATURE_BACKUP_MOODLE2:
@@ -216,8 +216,10 @@ function gwpayments_get_coursemodule_info($coursemodule) {
  */
 function mod_gwpayments_get_completion_active_rule_descriptions($cm) {
     // We perform these checks even though automatic completion is forced..
-    if (empty($cm->customdata['customcompletionrules'])
-        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
+    if (
+        empty($cm->customdata['customcompletionrules'])
+        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC
+    ) {
         return [];
     }
 
@@ -262,13 +264,22 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
     if (has_capability('mod/gwpayments:submitpayment', $modinfo->context) && !is_siteadmin()) {
         // For those that can submit gwpayments.
         $noviewlink = !$studentdisplayonpayments;
-        $userdata = $DB->get_record_sql('SELECT * FROM {gwpayments_userdata}
-                WHERE gwpaymentsid = ?
-                AND userid = ?',
-                [$modinfo->instance, $USER->id]);
+        $userdata = $DB->get_record_sql(
+            'SELECT * FROM {gwpayments_userdata} WHERE gwpaymentsid = ? AND userid = ?',
+            [$modinfo->instance, $USER->id]
+        );
         if (empty($userdata)) {
-            $uservisible = true;
-            $injectpaymentbutton = true;
+            // Take manual override of completion into account.
+            $completion = new completion_info($modinfo->get_course());
+            $usercompletion = $completion->get_data($modinfo, false, $USER->id);
+            if (!empty($usercompletion->overrideby) && $usercompletion->completionstate >= COMPLETION_COMPLETE) {
+                $uservisible = false;
+                $injectpaymentbutton = false;
+                $available = false; // Set as unavailable (this SHOULD hide the whole CM).
+            } else {
+                $uservisible = true;
+                $injectpaymentbutton = true;
+            }
         } else if ((int)$userdata->timeexpire > 0 && (int)$userdata->timeexpire < time()) {
             $uservisible = true;
             $injectpaymentbutton = true;
@@ -342,10 +353,10 @@ function mod_gwpayments_output_fragment_paymentregion($args) {
     $injectpaymentbutton = false;
     if (has_capability('mod/gwpayments:submitpayment', $cm->context) && !is_siteadmin()) {
         // For those that can submit gwpayments.
-        $userdata = $DB->get_record_sql('SELECT * FROM {gwpayments_userdata}
-                WHERE gwpaymentsid = ?
-                AND userid = ?',
-                [$cm->instance, $USER->id]);
+        $userdata = $DB->get_record_sql(
+            'SELECT * FROM {gwpayments_userdata} WHERE gwpaymentsid = ? AND userid = ?',
+            [$cm->instance, $USER->id]
+        );
         if (empty($userdata)) {
             $injectpaymentbutton = true;
         } else if ((int)$userdata->timeexpire > 0 && (int)$userdata->timeexpire < time()) {

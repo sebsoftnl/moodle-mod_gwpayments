@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'//mod/gwpayments/backup/moodle2/restore_gwpayments_stepslib.php');
+require_once($CFG->dirroot . '/mod/gwpayments/backup/moodle2/restore_gwpayments_stepslib.php');
 
 /**
  * Restore task for mod_gwpayments.
@@ -39,7 +39,6 @@ require_once($CFG->dirroot.'//mod/gwpayments/backup/moodle2/restore_gwpayments_s
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_gwpayments_activity_task extends restore_activity_task {
-
     /**
      * Defines particular settings that this activity can have.
      */
@@ -80,12 +79,16 @@ class restore_gwpayments_activity_task extends restore_activity_task {
 
         // Define the rules.
 
-        $rules[] = new restore_decode_rule('MODGWPAYMENTSVIEWBYID',
-                                           '/mod/gwpayments/view.php?id=$1',
-                                           'course_module');
-        $rules[] = new restore_decode_rule('MODGWPAYMENTSINDEX',
-                                           '/mod/gwpayments/index.php?id=$1',
-                                           'course_module');
+        $rules[] = new restore_decode_rule(
+            'MODGWPAYMENTSVIEWBYID',
+            '/mod/gwpayments/view.php?id=$1',
+            'course_module'
+        );
+        $rules[] = new restore_decode_rule(
+            'MODGWPAYMENTSINDEX',
+            '/mod/gwpayments/index.php?id=$1',
+            'course_module'
+        );
 
         return $rules;
     }

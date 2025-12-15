@@ -39,7 +39,6 @@ namespace mod_gwpayments\local;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class helper {
-
     /**
      * Returns the list of currencies that the payment subsystem supports and therefore we can work with.
      *
@@ -53,7 +52,7 @@ class helper {
             $currencies[$c] = new \lang_string($c, 'core_currencies');
         }
 
-        uasort($currencies, function($a, $b) {
+        uasort($currencies, function ($a, $b) {
             return strcmp($a, $b);
         });
 
@@ -117,5 +116,4 @@ class helper {
         }
         return true;
     }
-
 }

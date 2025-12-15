@@ -38,7 +38,6 @@ namespace mod_gwpayments\event;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class order_delivered extends \core\event\base {
-
     /**
      * Initialise required event data properties.
      */
@@ -92,7 +91,7 @@ class order_delivered extends \core\event\base {
      */
     public static function create_from_data($objectid, $userid, $context = null) {
         if ($context === null) {
-            list($course, $cm) = get_course_and_cm_from_instance($objectid, 'gwpayments');
+            [$course, $cm] = get_course_and_cm_from_instance($objectid, 'gwpayments');
             $context = \context_module::instance($cm->id);
         }
         $self = static::create([
@@ -115,5 +114,4 @@ class order_delivered extends \core\event\base {
         $self = static::create_from_data($objectid, $userid, $context);
         $self->trigger();
     }
-
 }

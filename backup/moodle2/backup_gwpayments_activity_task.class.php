@@ -38,7 +38,6 @@ require_once($CFG->dirroot . '//mod/gwpayments/backup/moodle2/backup_gwpayments_
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_gwpayments_activity_task extends backup_activity_task {
-
     /**
      * Defines particular settings for the plugin.
      */
@@ -50,8 +49,10 @@ class backup_gwpayments_activity_task extends backup_activity_task {
      * Defines particular steps for the backup process.
      */
     protected function define_my_steps() {
-        $this->add_step(new backup_gwpayments_activity_structure_step('gwpayments_structure',
-                'gwpayments.xml'));
+        $this->add_step(new backup_gwpayments_activity_structure_step(
+            'gwpayments_structure',
+            'gwpayments.xml'
+        ));
     }
 
     /**
@@ -73,5 +74,4 @@ class backup_gwpayments_activity_task extends backup_activity_task {
 
         return $content;
     }
-
 }

@@ -35,7 +35,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_gwpayments_activity_structure_step extends backup_activity_structure_step {
-
     /**
      * Defines the structure of the resulting xml file.
      *
@@ -48,19 +47,23 @@ class backup_gwpayments_activity_structure_step extends backup_activity_structur
         $groupinfo = $this->get_setting_value('groups');
 
         // Replace with the attributes and final elements that the element will handle.
-        $gwpayments = new backup_nested_element('gwpayments', ['id'], [
-            'name',
-            'intro',
-            'introformat',
-            'accountid',
-            'cost',
-            'vat',
-            'currency',
-            'studentdisplayonpayments',
-            'disablepaymentonmisconfig',
-            'timecreated',
-            'timemodified',
-        ]);
+        $gwpayments = new backup_nested_element(
+            'gwpayments',
+            ['id'],
+            [
+                'name',
+                'intro',
+                'introformat',
+                'accountid',
+                'cost',
+                'vat',
+                'currency',
+                'studentdisplayonpayments',
+                'disablepaymentonmisconfig',
+                'timecreated',
+                'timemodified',
+            ]
+        );
 
         // For this base, define source, annotate IDs and file annotations.
         $gwpayments->set_source_table('gwpayments', ['id' => backup::VAR_ACTIVITYID]);
@@ -102,5 +105,4 @@ class backup_gwpayments_activity_structure_step extends backup_activity_structur
         // Define id annotations.
         $dataitem->annotate_ids('user', 'userid');
     }
-
 }

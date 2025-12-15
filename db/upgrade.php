@@ -60,8 +60,16 @@ function xmldb_gwpayments_upgrade($oldversion) {
 
     if ($oldversion < 2021081601) {
         $table = new xmldb_table('gwpayments');
-        $field = new xmldb_field('disablepaymentonmisconfig', XMLDB_TYPE_INTEGER,
-                1, null, XMLDB_NOTNULL, null, '1', 'studentdisplayonpayments');
+        $field = new xmldb_field(
+            'disablepaymentonmisconfig',
+            XMLDB_TYPE_INTEGER,
+            1,
+            null,
+            XMLDB_NOTNULL,
+            null,
+            '1',
+            'studentdisplayonpayments'
+        );
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }

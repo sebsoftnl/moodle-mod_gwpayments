@@ -40,14 +40,14 @@ $event = \mod_gwpayments\event\course_module_instance_list_viewed::create($param
 $event->add_record_snapshot('course', $course);
 $event->trigger();
 
-$strmodname       = get_string('modulename', 'mod_gwpayments');
+$strmodname = get_string('modulename', 'mod_gwpayments');
 $strmodnameplural = get_string('modulenameplural', 'mod_gwpayments');
-$strname         = get_string('name');
-$strintro        = get_string('moduleintro');
+$strname = get_string('name');
+$strintro = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
 
 $PAGE->set_url('/mod/gwpayments/index.php', ['id' => $course->id]);
-$PAGE->set_title($course->shortname.': '.$strmodnameplural);
+$PAGE->set_title($course->shortname . ': ' . $strmodnameplural);
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add($strmodnameplural);
 
@@ -65,11 +65,11 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
-    $strsectionname = get_string('sectionname', 'format_'.$course->format);
-    $table->head  = [$strsectionname, $strname, $strintro];
+    $strsectionname = get_string('sectionname', 'format_' . $course->format);
+    $table->head = [$strsectionname, $strname, $strintro];
     $table->align = ['center', 'left', 'left'];
 } else {
-    $table->head  = [$strlastmodified, $strname, $strintro];
+    $table->head = [$strlastmodified, $strname, $strintro];
     $table->align = ['left', 'left', 'left'];
 }
 
@@ -89,20 +89,20 @@ foreach ($gwpayments as $gwpayment) {
             $currentsection = $gwpayment->section;
         }
     } else {
-        $printsection = '<span class="smallinfo">'.userdate($gwpayment->timemodified)."</span>";
+        $printsection = '<span class="smallinfo">' . userdate($gwpayment->timemodified) . "</span>";
     }
 
     $extra = empty($cm->extra) ? '' : $cm->extra;
     $icon = '';
     if (!empty($cm->icon)) {
-        $icon = '<img src="'.$OUTPUT->pix_url($cm->icon, $cm->iconcomponent) .
-                '" class="activityicon" alt="'.get_string('modulename', $cm->modname).'" /> ';
+        $icon = '<img src="' . $OUTPUT->pix_url($cm->icon, $cm->iconcomponent) .
+                '" class="activityicon" alt="' . get_string('modulename', $cm->modname) . '" /> ';
     }
 
     $class = $gwpayment->visible ? '' : 'class="dimmed"'; // Hidden modules are dimmed.
     $table->data[] = [
         $printsection,
-        "<a $class $extra href=\"view.php?id=$cm->id\">".$icon.format_string($gwpayment->name)."</a>",
+        "<a $class $extra href=\"view.php?id=$cm->id\">" . $icon . format_string($gwpayment->name) . "</a>",
         format_module_intro('gwpayments', $gwpayment, $cm->id),
     ];
 }

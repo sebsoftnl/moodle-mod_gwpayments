@@ -26,6 +26,7 @@
  * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+// @codingStandardsIgnoreFile Due to Moodle failing the "class implements" alphabetically itself.
 
 namespace mod_gwpayments\privacy;
 
@@ -46,8 +47,8 @@ use core_privacy\local\metadata\collection;
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_payment\privacy\consumer_provider,
-    \core_privacy\local\request\data_provider {
-
+    \core_privacy\local\request\data_provider
+{
     /**
      * Provides meta data that is stored about a user with block_coupon
      *
@@ -340,5 +341,4 @@ class provider implements
             \core_payment\privacy\provider::delete_data_for_payment_sql($sql, $params);
         }
     }
-
 }

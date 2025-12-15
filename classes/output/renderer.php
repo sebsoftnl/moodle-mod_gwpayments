@@ -41,7 +41,6 @@ use context;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \plugin_renderer_base {
-
     /**
      * Render paymentdetails for given context/user.
      *
@@ -63,5 +62,4 @@ class renderer extends \plugin_renderer_base {
         $context = $widget->export_for_template($this);
         return $this->render_from_template('mod_gwpayments/paymentdetails', $context);
     }
-
 }

@@ -29,7 +29,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
  * gwpayments configuration form
@@ -41,7 +41,6 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_gwpayments_mod_form extends moodleform_mod {
-
     /**
      * Form definition.
      */
@@ -92,23 +91,33 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $accounts = \core_payment\helper::get_payment_accounts_menu($this->context);
         if (count($accounts) == 0) {
             // Add warning!
-            $mform->addElement('static', 'accountid_text', get_string('paymentaccount', 'payment'),
-                html_writer::span(get_string('noaccountsavilable', 'payment'), 'alert alert-danger'));
+            $mform->addElement(
+                'static',
+                'accountid_text',
+                get_string('paymentaccount', 'payment'),
+                html_writer::span(get_string('noaccountsavilable', 'payment'), 'alert alert-danger')
+            );
         }
         $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
         $mform->addElement('select', 'accountid', get_string('paymentaccount', 'payment'), $accounts);
         $mform->setType('accountid', PARAM_INT);
         $mform->addHelpButton('accountid', 'paymentaccount', 'mod_gwpayments');
 
-        $mform->addElement('advcheckbox', 'studentdisplayonpayments',
-                get_string('studentdisplayonpayments', 'mod_gwpayments'),
-                get_string('studentdisplayonpayments', 'mod_gwpayments'));
+        $mform->addElement(
+            'advcheckbox',
+            'studentdisplayonpayments',
+            get_string('studentdisplayonpayments', 'mod_gwpayments'),
+            get_string('studentdisplayonpayments', 'mod_gwpayments')
+        );
         $mform->setDefault('studentdisplayonpayments', $config->studentdisplayonpayments);
         $mform->addHelpButton('studentdisplayonpayments', 'studentdisplayonpayments', 'mod_gwpayments');
 
-        $mform->addElement('advcheckbox', 'disablepaymentonmisconfig',
-                get_string('disablepaymentonmisconfig', 'mod_gwpayments'),
-                get_string('disablepaymentonmisconfig', 'mod_gwpayments'));
+        $mform->addElement(
+            'advcheckbox',
+            'disablepaymentonmisconfig',
+            get_string('disablepaymentonmisconfig', 'mod_gwpayments'),
+            get_string('disablepaymentonmisconfig', 'mod_gwpayments')
+        );
         $mform->setDefault('disablepaymentonmisconfig', $config->disablepaymentonmisconfig);
         $mform->addHelpButton('disablepaymentonmisconfig', 'disablepaymentonmisconfig', 'mod_gwpayments');
 
@@ -123,8 +132,12 @@ class mod_gwpayments_mod_form extends moodleform_mod {
             $this->_form->setConstant('completion', COMPLETION_TRACKING_AUTOMATIC);
             $this->_form->freeze('completion');
         } else {
-            $mform->addElement('static', 'completiondisabled', get_string('completiondisabled:label', 'mod_gwpayments'),
-                    get_string('completiondisabled:warning', 'mod_gwpayments'));
+            $mform->addElement(
+                'static',
+                'completiondisabled',
+                get_string('completiondisabled:label', 'mod_gwpayments'),
+                get_string('completiondisabled:warning', 'mod_gwpayments')
+            );
             $mform->closeHeaderBefore('completiondisabled');
         }
         // -------------------------------------------------------
@@ -147,9 +160,12 @@ class mod_gwpayments_mod_form extends moodleform_mod {
         $mform =& $this->_form;
 
         $mform->addElement('static', '_completionsubmit', '', $img . ' ' . get_string('completionsubmit', 'mod_gwpayments'));
-        $mform->addElement('hidden', 'completionsubmit', 1);
-        $mform->setType('completionsubmit', PARAM_INT);
-        return ['_completionsubmit', 'completionsubmit'];
+
+        $suffix = $this->get_suffix();
+        $name = 'completionsubmit' . $suffix;
+        $mform->addElement('hidden', $name, 1);
+        $mform->setType($name, PARAM_INT);
+        return [$name];
     }
 
     /**
@@ -161,7 +177,9 @@ class mod_gwpayments_mod_form extends moodleform_mod {
      *   default returns false
      */
     public function completion_rule_enabled($data) {
-        return !empty($data['completionsubmit']);
+        $suffix = $this->get_suffix();
+        $name = 'completionsubmit' . $suffix;
+        return !empty($data[$name]);
     }
 
     /**
@@ -208,5 +226,4 @@ class mod_gwpayments_mod_form extends moodleform_mod {
 
         return $errors;
     }
-
 }

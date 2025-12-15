@@ -43,7 +43,6 @@ require_once($CFG->libdir . '/tablelib.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table extends \table_sql {
-
     /**
      * @var \context
      */
@@ -56,7 +55,7 @@ class table extends \table_sql {
      */
     public function __construct($context) {
         global $USER;
-        parent::__construct(__CLASS__. '-' . $USER->id);
+        parent::__construct(__CLASS__ . '-' . $USER->id);
         $this->context = $context;
         $this->sortable(true, 'ud.timecreated', 'DESC');
         $this->collapsible(false);
@@ -196,5 +195,4 @@ class table extends \table_sql {
             return '';
         }
     }
-
 }

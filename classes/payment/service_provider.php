@@ -39,7 +39,6 @@ namespace mod_gwpayments\payment;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class service_provider implements \core_payment\local\callback\service_provider {
-
     /**
      * Generate payable data.
      *
@@ -151,5 +150,4 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         return true;
     }
-
 }

@@ -30,7 +30,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-
     $currencies = \mod_gwpayments\local\helper::get_possible_currencies();
     if (empty($currencies)) {
         $notify = new \core\output\notification(
@@ -46,35 +45,66 @@ if ($ADMIN->fulltree) {
     $donate = '<a href="https://customerpanel.sebsoft.nl/sebsoft/donate/intro.php" target="_new">' .
             '<img src="' . $OUTPUT->image_url('donate', 'block_coupon') . '" /></a>';
     $header = '<div class="mod_gwpayments-logopromo">' . $image . $donate . '</div>';
-    $settings->add(new admin_setting_heading('mod_gwpayments_logopromo',
-            get_string('promo', 'mod_gwpayments'),
-            get_string('promodesc', 'mod_gwpayments', $header)));
+    $settings->add(new admin_setting_heading(
+        'mod_gwpayments_logopromo',
+        get_string('promo', 'mod_gwpayments'),
+        get_string('promodesc', 'mod_gwpayments', $header)
+    ));
 
     require_once("$CFG->libdir/resourcelib.php");
     // Modedit defaults.
-    $settings->add(new admin_setting_heading('urlmodeditdefaults',
-            get_string('modeditdefaults', 'admin'),
-            get_string('condifmodeditdefaults', 'admin')));
+    $settings->add(new admin_setting_heading(
+        'urlmodeditdefaults',
+        get_string('modeditdefaults', 'admin'),
+        get_string('condifmodeditdefaults', 'admin')
+    ));
 
-    $settings->add(new admin_setting_configtext('gwpayments/cost',
-            get_string('cost', 'mod_gwpayments'),
-            '', 10.00, PARAM_FLOAT, 4));
+    $settings->add(new admin_setting_configtext(
+        'gwpayments/cost',
+        get_string('cost', 'mod_gwpayments'),
+        '',
+        10.00,
+        PARAM_FLOAT,
+        4
+    ));
 
-    $settings->add(new admin_setting_configtext('gwpayments/vat',
-            get_string('vat', 'mod_gwpayments'),
-            get_string('vat_help', 'mod_gwpayments'), 21, PARAM_INT, 4));
+    $settings->add(new admin_setting_configtext(
+        'gwpayments/vat',
+        get_string('vat', 'mod_gwpayments'),
+        get_string('vat_help', 'mod_gwpayments'),
+        21,
+        PARAM_INT,
+        4
+    ));
 
     if (!empty($currencies)) {
-        $settings->add(new admin_setting_configselect('gwpayments/currency',
-                get_string('currency', 'mod_gwpayments'), '', 'EUR', $currencies));
+        $settings->add(new admin_setting_configselect(
+            'gwpayments/currency',
+            get_string('currency', 'mod_gwpayments'),
+            '',
+            'EUR',
+            $currencies
+        ));
     }
 
-    $settings->add(new admin_setting_configcheckbox('gwpayments/studentdisplayonpayments',
+    $settings->add(new admin_setting_configcheckbox(
+        'gwpayments/studentdisplayonpayments',
         get_string('studentdisplayonpayments', 'mod_gwpayments'),
-        get_string('studentdisplayonpayments_help', 'mod_gwpayments'), 0));
+        get_string('studentdisplayonpayments_help', 'mod_gwpayments'),
+        0
+    ));
 
-    $settings->add(new admin_setting_configcheckbox('gwpayments/disablepaymentonmisconfig',
+    $settings->add(new admin_setting_configcheckbox(
+        'gwpayments/disablepaymentonmisconfig',
         get_string('disablepaymentonmisconfig', 'mod_gwpayments'),
-        get_string('disablepaymentonmisconfig_help', 'mod_gwpayments'), 0));
+        get_string('disablepaymentonmisconfig_help', 'mod_gwpayments'),
+        0
+    ));
 
+    $settings->add(new admin_setting_configcheckbox(
+        'gwpayments/disablepaymentonusercompletion',
+        get_string('disablepaymentonusercompletion', 'mod_gwpayments'),
+        get_string('disablepaymentonusercompletion_help', 'mod_gwpayments'),
+        1
+    ));
 }

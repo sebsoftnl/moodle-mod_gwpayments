@@ -37,5 +37,4 @@
  */
 function xmldb_gwpayments_install() {
     global $CFG;
-
 }
