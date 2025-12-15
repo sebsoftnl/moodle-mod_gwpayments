@@ -59,6 +59,7 @@ class table extends \table_sql {
         $this->context = $context;
         $this->sortable(true, 'ud.timecreated', 'DESC');
         $this->collapsible(false);
+        $this->useridfield = 'userid';
     }
 
     /**
