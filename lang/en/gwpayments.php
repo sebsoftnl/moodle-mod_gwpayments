@@ -43,7 +43,7 @@ A value of 0 indicates no expiry.';
 $string['currency'] = 'Currency';
 $string['disablepaymentonmisconfig'] = 'Disable payment button when no (valid) payment can be made.';
 $string['disablepaymentonmisconfig_help'] = 'When enabled, the payment button will be disabled when a payment cannot be made, e.g. on currency mismappings or no gateways are available';
-$string['disablepaymentoncompletionoverride'] = 'Disable payment button when user completion has been <i>overridden</i> for this activity?';
+$string['disablepaymentonusercompletionoverride'] = 'Disable payment button when user completion has been <i>overridden</i> for this activity?';
 $string['disablepaymentonusercompletionoverride_help'] = 'When enabled, the payment will be hidden when users have marked as "completed" by means of an <i>override</i> in the activity completions.';
 $string['err:no-payment-account-set'] = 'No payment account is set for this activity.';
 $string['err:payment-account-not-exists'] = 'The payment account for this activity no longer exists.';

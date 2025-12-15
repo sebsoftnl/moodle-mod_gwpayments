@@ -102,9 +102,9 @@ if ($ADMIN->fulltree) {
     ));
 
     $settings->add(new admin_setting_configcheckbox(
-        'gwpayments/disablepaymentonusercompletion',
-        get_string('disablepaymentonusercompletion', 'mod_gwpayments'),
-        get_string('disablepaymentonusercompletion_help', 'mod_gwpayments'),
+        'gwpayments/disablepaymentonusercompletionoverride',
+        get_string('disablepaymentonusercompletionoverride', 'mod_gwpayments'),
+        get_string('disablepaymentonusercompletionoverride_help', 'mod_gwpayments'),
         1
     ));
 }

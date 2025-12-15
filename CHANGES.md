@@ -1,3 +1,9 @@
+Version 1.0.4 (build 2025120101)
+
+** Resolved #12.
+
+-----
+
 Version 1.0.4 (build 2025120100)
 
 ** Resolved #11 -- added settings to hide on manual completion overrides.

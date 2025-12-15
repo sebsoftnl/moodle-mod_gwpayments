@@ -250,6 +250,7 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
 
     $instance = $DB->get_record('gwpayments', ['id' => $modinfo->instance], '*', MUST_EXIST);
     $studentdisplayonpayments = (bool)$instance->studentdisplayonpayments;
+    $disablepaymentonusercompletionoverride = get_config('mod_gwpayments', 'disablepaymentonusercompletionoverride');
     $notifications = [];
     $canpaymentbemade = \mod_gwpayments\local\helper::can_payment_be_made($modinfo, $notifications);
 
@@ -272,7 +273,11 @@ function gwpayments_cm_info_dynamic(cm_info $modinfo) {
             // Take manual override of completion into account.
             $completion = new completion_info($modinfo->get_course());
             $usercompletion = $completion->get_data($modinfo, false, $USER->id);
-            if (!empty($usercompletion->overrideby) && $usercompletion->completionstate >= COMPLETION_COMPLETE) {
+            if (
+                !empty($usercompletion->overrideby) &&
+                $usercompletion->completionstate >= COMPLETION_COMPLETE &&
+                $disablepaymentonusercompletionoverride
+            ) {
                 $uservisible = false;
                 $injectpaymentbutton = false;
                 $available = false; // Set as unavailable (this SHOULD hide the whole CM).
