@@ -1,3 +1,11 @@
+Version 1.0.4 (build 2025120100)
+
+** Resolved #11 -- added settings to hide on manual completion overrides.
+** Resolved #9 -- Coding error detected, it must be fixed by a programmer: The theme has already been set up for this page ready for output.
+   Fixed by initialising our "own" renderer.
+
+-----
+
 Version 1.0.3 (build 2023011600)
 
 ** Resolved #5 -- item always showed up. Now also taking original visibility/availability into account.
